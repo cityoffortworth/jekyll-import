@@ -13,6 +13,7 @@ module Jekyll
         :drupal6 => 'Drupal6',
         :drupal7 => 'Drupal7',
         :enki => 'Enki',
+        :fw =>'FortWorth',
         :joomla => 'Joomla',
         :jrnl => 'Jrnl',
         :ghost => 'Ghost',
