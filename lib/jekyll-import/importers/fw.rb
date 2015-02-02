@@ -30,6 +30,7 @@ module JekyllImport
         body = node.css('content_html').text
         body = Nokogiri::HTML.fragment(body)
         body.css('h2').first.remove
+        body.css('h4').first.remove
 
         header = {
           'title' => title,
