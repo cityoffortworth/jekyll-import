@@ -30,8 +30,8 @@ module JekyllImport
 
         body = node.css('content_html').text
         body = Nokogiri::HTML.fragment(body)
-        body.css('h2').first.remove
-        body.css('h4').first.remove
+        body.css('h2').first.remove if body.at_css('h2')
+        body.css('h4').first.remove if body.at_css('h4')
 
         body = ReverseMarkdown.convert body.to_html
 
