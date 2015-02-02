@@ -44,7 +44,7 @@ module JekyllImport
 
         date = Date.parse(node.css('date_created').text)
         slug = title.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
-        filename = File.join(dir, "#{date}-#{slug}.html")
+        filename = File.join(dir, "#{date}-#{slug}.md")
 
         FileUtils.mkdir_p(dir)
         File.open(filename, "w") do |f|
