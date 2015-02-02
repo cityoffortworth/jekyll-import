@@ -1,9 +1,9 @@
 require 'helper'
 
 class TestFWImporter < Test::Unit::TestCase
-  should "prints titles" do
+  should "produces pages from xml" do
     options = {
-      'xml_file' => '../FortWorthTexas.gov/_data/city-news-export-test.xml',
+      'xml_file' => 'test/fixtures/fw.xml',
       'target_dir' => '_posts/test'
     }
     Importers::FW.process(options)
