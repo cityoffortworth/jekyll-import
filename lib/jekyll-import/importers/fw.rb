@@ -32,18 +32,16 @@ module JekyllImport
         body.css('h2').first.remove
         body.css('h4').first.remove
 
-        date_created = get_date(node, 'date_created')
-        end_date = get_date(node, 'end_date')
-
         header = {
           'title' => title,
           'excerpt' => excerpt,
-          'date' => date_created,
-          'end_date' => end_date
+          'date' => get_date(node, 'date_created'),
+          'end_date' => get_date(node, 'end_date')
         }
 
+        date = Date.parse(node.css('date_created').text)
         slug = title.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
-        filename = File.join(dir, "#{slug}.html")
+        filename = File.join(dir, "#{date}-#{slug}.html")
 
         FileUtils.mkdir_p(dir)
         File.open(filename, "w") do |f|
