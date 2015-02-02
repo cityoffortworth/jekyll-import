@@ -32,13 +32,14 @@ module JekyllImport
         body.css('h2').first.remove
         body.css('h4').first.remove
 
-        date_created = node.css('date_created')
-        date_created = Time.parse(date_created.text).utc.to_s unless date_created.nil?
+        date_created = get_date(node, 'date_created')
+        end_date = get_date(node, 'end_date')
 
         header = {
           'title' => title,
           'excerpt' => excerpt,
-          'date' => date_created
+          'date' => date_created,
+          'end_date' => end_date
         }
 
         slug = title.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
@@ -50,6 +51,10 @@ module JekyllImport
           f.puts "---\n\n"
           f.puts body
         end
+      end
+
+      def self.get_date(node, css)
+        node.at_css(css) ? Time.parse(node.css(css).text).utc.to_s : nil
       end
 
     end
