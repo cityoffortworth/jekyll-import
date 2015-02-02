@@ -6,6 +6,7 @@ module JekyllImport
         JekyllImport.require_with_fallback(%w[
           nokogiri
           fileutils
+          reverse_markdown
         ])
       end
 
@@ -31,6 +32,8 @@ module JekyllImport
         body = Nokogiri::HTML.fragment(body)
         body.css('h2').first.remove
         body.css('h4').first.remove
+
+        body = ReverseMarkdown.convert body.to_html
 
         header = {
           'title' => title,
