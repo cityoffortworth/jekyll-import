@@ -32,9 +32,13 @@ module JekyllImport
         body.css('h2').first.remove
         body.css('h4').first.remove
 
+        date_created = node.css('date_created')
+        date_created = Time.parse(date_created.text).utc.to_s unless date_created.nil?
+
         header = {
           'title' => title,
-          'excerpt' => excerpt
+          'excerpt' => excerpt,
+          'date' => date_created
         }
 
         slug = title.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
