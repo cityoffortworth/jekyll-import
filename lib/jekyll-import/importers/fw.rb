@@ -65,7 +65,9 @@ module JekyllImport
       end
 
       def self.get_date(node, css)
-        node.at_css(css) ? Time.parse(node.css(css).text).utc.to_s : nil
+        value = node.css(css).text
+        format = '%Y-%m-%dT%H:%M:%S'
+        node.at_css(css) ? DateTime.parse(value).strftime(format) : nil
       end
 
     end
