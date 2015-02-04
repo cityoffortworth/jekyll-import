@@ -25,6 +25,7 @@ module JekyllImport
 
       def self.process(options)
         ReverseMarkdown::Converters.unregister(:div)
+        ReverseMarkdown::Converters.unregister(:table)
 
         xml_file = options.fetch('xml_file')
         dir = options.fetch('target_dir')
