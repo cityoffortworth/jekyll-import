@@ -1,3 +1,11 @@
+module ReverseMarkdown
+  module Converters
+    def self.unregister(tag_name)
+      @@converters.delete(tag_name.to_sym)
+    end
+  end
+end
+
 module JekyllImport
   module Importers
     class FW < Importer
@@ -16,6 +24,8 @@ module JekyllImport
       end
 
       def self.process(options)
+        ReverseMarkdown::Converters.unregister(:div)
+
         xml_file = options.fetch('xml_file')
         dir = options.fetch('target_dir')
 
@@ -33,7 +43,7 @@ module JekyllImport
         body.css('h2').first.remove if body.at_css('h2')
         body.css('h4').first.remove if body.at_css('h4')
 
-        body = ReverseMarkdown.convert body.to_html
+        body = ReverseMarkdown.convert(body.to_html)
 
         header = {
           'title' => title,
