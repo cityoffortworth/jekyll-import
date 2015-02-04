@@ -35,6 +35,7 @@ module JekyllImport
       end
 
       def self.write_page(node, dir)
+        content_id = Integer(node.css('content_id').text)
         title = node.css('content_title').text
         teaser = node.css('content_teaser').text
         excerpt = Nokogiri::HTML.fragment(teaser).css('p').text
@@ -47,6 +48,7 @@ module JekyllImport
         body = ReverseMarkdown.convert(body.to_html)
 
         header = {
+          'content_id' => content_id,
           'title' => title,
           'excerpt' => excerpt,
           'date' => get_date(node, 'date_created'),
