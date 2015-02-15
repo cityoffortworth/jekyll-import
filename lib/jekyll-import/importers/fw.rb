@@ -51,9 +51,10 @@ module JekyllImport
           'content_id' => content_id,
           'title' => title,
           'excerpt' => excerpt,
-          'date' => get_date(node, 'date_created'),
-          'end_date' => get_date(node, 'end_date')
+          'date' => get_date(node, 'date_created')
         }
+
+        header['end_date'] = get_date(node, 'end_date') if node.at_css('end_date')
 
         date = Date.parse(node.css('date_created').text)
         slug = title.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
