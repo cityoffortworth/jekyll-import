@@ -22,6 +22,7 @@ module JekyllImport
         c.option 'xml_file', '--file NAME', 'The XML file to import'
         c.option 'target_dir', '--dir NAME', 'The target directory for pages'
         c.option 'omit_timestamp', '--omit_timestamp', 'Generated filenames will not have timestamps appended'
+        c.option 'remove_h1', '--remove_h1', 'Remove H1 tag from content'
       end
 
       def self.process(options)
@@ -41,6 +42,10 @@ module JekyllImport
 
         body = node.css('content_html').text
         body = Nokogiri::HTML.fragment(body)
+
+        remove_h1 = options.fetch('remove_h1', false)
+        body.css('h1').first.remove if remove_h1 && body.at_css('h1')
+
         body.css('h2').first.remove if body.at_css('h2')
         body.css('h4').first.remove if body.at_css('h4')
 
