@@ -21,6 +21,7 @@ module JekyllImport
       def self.specify_options(c)
         c.option 'xml_file', '--file NAME', 'The XML file to import'
         c.option 'target_dir', '--dir NAME', 'The target directory for pages'
+        c.option 'omit_timestamp', '--omit-timestamp', 'Generated filenames will not have timestamps appended'
       end
 
       def self.process(options)
@@ -29,12 +30,13 @@ module JekyllImport
 
         xml_file = options.fetch('xml_file')
         dir = options.fetch('target_dir')
+        omit_timestamp = options.fetch('omit_timestamp')
 
         document = Nokogiri::XML(File.open(xml_file))
-        document.css('Detail').each { |node| write_page(node, dir) }
+        document.css('Detail').each { |node| write_page(node, dir, omit_timestamp) }
       end
 
-      def self.write_page(node, dir)
+      def self.write_page(node, dir, omit_timestamp)
         content_id = Integer(node.css('content_id').text)
         title = node.css('content_title').text
         teaser = node.css('content_teaser').text
@@ -58,7 +60,7 @@ module JekyllImport
 
         date = Date.parse(node.css('date_created').text)
         slug = title.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
-        filename = File.join(dir, "#{date}-#{slug}.md")
+        filename = omit_timestamp ? File.join(dir, "#{slug}.md") : File.join(dir, "#{date}-#{slug}.md")
 
         FileUtils.mkdir_p(dir)
         File.open(filename, "w") do |f|
