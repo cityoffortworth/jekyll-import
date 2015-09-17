@@ -64,7 +64,7 @@ module JekyllImport
 
         header['end_date'] = get_date(node, 'end_date') if node.at_css('end_date')
         header['updated'] = node.attr('last_edit_date') if attribute_has_value?(node, 'last_edit_date')
-        header['thumbnail'] = node.attr('image') if attribute_has_value?(node, 'image')
+        header['thumbnail'] = "//fortworthtexas.gov/#{node.attr('image')}" if attribute_has_value?(node, 'image')
 
         date = Date.parse(node.css('date_created').text)
         slug = title.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
