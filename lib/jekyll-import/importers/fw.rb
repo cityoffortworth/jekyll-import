@@ -23,6 +23,7 @@ module JekyllImport
         c.option 'target_dir', '--dir NAME', 'The target directory for pages'
         c.option 'omit_timestamp', '--omit_timestamp', 'Generated filenames will not have timestamps appended'
         c.option 'remove_h1', '--remove_h1', 'Remove H1 tag from content'
+        c.option 'remove_datestamp_p', '--remove_datestamp_p', 'Remove p tag with id=datestamp'
       end
 
       def self.process(options)
@@ -45,6 +46,9 @@ module JekyllImport
 
         remove_h1 = options.fetch('remove_h1', false)
         body.css('h1').first.remove if remove_h1 && body.at_css('h1')
+
+        remove_datestamp_p = options.fetch('remove_datestamp_p', false)
+        body.css('p#datestamp').first.remove if remove_datestamp_p && body.at_css('p#datestamp')
 
         body.css('h2').first.remove if body.at_css('h2')
         body.css('h4').first.remove if body.at_css('h4')
