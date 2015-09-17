@@ -63,6 +63,8 @@ module JekyllImport
         }
 
         header['end_date'] = get_date(node, 'end_date') if node.at_css('end_date')
+        header['updated'] = node.attr('last_edit_date') if attribute_has_value?(node, 'last_edit_date')
+        header['thumbnail'] = node.attr('image') if attribute_has_value?(node, 'image')
 
         date = Date.parse(node.css('date_created').text)
         slug = title.downcase.strip.gsub(' ', '-').gsub(/[^\w-]/, '')
@@ -84,6 +86,9 @@ module JekyllImport
         node.at_css(css) ? DateTime.parse(value).strftime(format) : nil
       end
 
+      def self.attribute_has_value?(node, key)
+         !node.attr(key).nil? && !node.attr(key).empty?
+      end
     end
   end
 end
