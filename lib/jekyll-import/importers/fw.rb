@@ -24,6 +24,7 @@ module JekyllImport
         c.option 'omit_timestamp', '--omit_timestamp', 'Generated filenames will not have timestamps appended'
         c.option 'remove_h1', '--remove_h1', 'Remove H1 tag from content'
         c.option 'remove_datestamp_p', '--remove_datestamp_p', 'Remove p tag with id=datestamp'
+        c.option 'omit_content_types', '--omit_content_types NUMBERS', 'Filter out given list of comma separated content type values'
       end
 
       def self.process(options)
@@ -32,7 +33,17 @@ module JekyllImport
 
         xml_file = options.fetch('xml_file')
         document = Nokogiri::XML(File.open(xml_file))
-        document.css('Detail').each { |node| write_page(node, options) }
+        detail_nodes = document.css('Detail')
+
+        omit_content_types = options.fetch('omit_content_types', nil)
+        if !omit_content_types.nil?
+          types_to_omit = omit_content_types.chomp.split(/,/).map(&:to_s)
+          detail_nodes = document.css('Detail').select do |n|
+            !attribute_has_value?(n, 'content_type') || !types_to_omit.include?(n.attr('content_type'))
+          end
+        end
+
+        detail_nodes.each { |node| write_page(node, options) }
       end
 
       def self.write_page(node, options)
